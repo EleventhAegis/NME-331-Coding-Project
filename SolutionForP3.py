@@ -24,7 +24,7 @@ class Solution:
 
         paths = bfs_path(self.graph, self.isp, self.info["list_clients"])
 
-        # try just updating bandwidths so all can get through
+        # go through all paths and add up bandwidths required
         for client, path in paths.items():
             for router in path:
                 if router not in bandwidths:
@@ -32,25 +32,16 @@ class Solution:
                 else:
                     bandwidths[router] += 1
 
-
-        # newBandwidths = {}
-        if(len(bandwidths) != len(self.info["bandwidths"])):
-            print("ah fuck")
-        # check new bandwidths against old, keep higher
+        # check new bandwidths against old, keeping the higher value
         for router, band in self.info["bandwidths"].items():
+            # if not in bandwidths use old value
             if router not in bandwidths:
                 bandwidths[router] = band
-
             inputBandwidth = bandwidths[router]
-
             if inputBandwidth > band:
                 bandwidths[router] = inputBandwidth
             else:
                 bandwidths[router] = band
 
-        # bandwidths = self.info["bandwidths"]
-
-
         # WARNING: DO NOT MODIFY THE LINE BELOW, OR BAD THINGS WILL HAPPEN
         return (paths, bandwidths, priorities)
-
